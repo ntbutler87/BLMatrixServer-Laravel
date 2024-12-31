@@ -1,0 +1,21 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.Tile {
+  transition: all ease-in-out 0.2s;
+}
+
+.Tile:active {
+  filter: brightness(0.70);
+}
+
+@media (hover: hover) {
+  .Tile:hover {
+    filter: brightness(0.85);
+    cursor:pointer;
+  }  
+}
