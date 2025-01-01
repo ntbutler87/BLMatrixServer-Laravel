@@ -313,44 +313,42 @@ class AppSettings {
 
 }
 
-// TODO: Port over the image picker component
-/*
 export interface ImagePreviewInterface {
-    image: ImageSourcePropType
+    image: string
     onSelect: Function,
 }
 export function ImagePreview({image, onSelect}: ImagePreviewInterface): React.JSX.Element {
     return (
-        <TouchableOpacity 
-            onPress={() => {onSelect()}}
+        <div 
+            onClick={() => {onSelect()}}
             style={{width: 60, height: 60, 
             padding: 10,
             borderRadius: 60,
             backgroundColor: '#E8F6FF',justifyContent:'center',alignItems:'center'}} >
-            <Image source={image} 
+            <img src={image} 
                 style={{
                     width: 45,
                     height: 45,
                     alignSelf: 'center',}} />
-        </TouchableOpacity>
+        </div>
     );
 }
 
 export interface ImagePickerInterface {
-    style?: StyleProp<ViewStyle>
+    // style?: StyleProp<ViewStyle>
     onSelect: Function,
     horizontal: boolean,
 }
-export function ImagePicker({style, onSelect, horizontal}: ImagePickerInterface): React.JSX.Element {
+export function ImagePicker({/*style,*/ onSelect, horizontal}: ImagePickerInterface): React.JSX.Element {
     return (
-        <ScrollView contentContainerStyle={{alignItems: 'center',}} horizontal={horizontal} style={[{},style]}>
+        <div style={{display: 'flex', flexDirection: 'row' as 'row', flexWrap: 'nowrap' as 'nowrap', overflow:'clip', alignItems: 'center',}} /*style={[{},style]}*/>
             {imageArray.map( (image, index) => {
                 return <ImagePreview key={"IMAGE"+index} image={image} onSelect={() => {onSelect(image, index)}} />
             } )}
-        </ScrollView>
+        </div>
     );
 }
-*/
+
 export const getImage = (port: MatrixInput | MatrixOutput | MatrixScene | Macro, item: MatrixPreset | MatrixPort | Macro ) => {
     if (item === undefined){
         return hdmiImage;

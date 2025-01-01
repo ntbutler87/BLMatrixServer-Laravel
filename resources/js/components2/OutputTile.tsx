@@ -14,14 +14,12 @@ interface PortStatus {
 export default function OutputTile({ disabled, port, input, onPressF, appPortConfig }: PortStatus) {
     return (
         <div className="Tile" style={{...CommonStyles.Tile, ...(disabled) ? CommonStyles.Disabled : null}} onClick={ (disabled) ? () => {} : () => {onPressF(port)}}>
-            <div style={{flex:1, placeItems: 'center'}}>
-                <div style={{...CommonStyles.TilePortImageContainer, ...(disabled) ? CommonStyles.Disabled : null}}>
-                    <img style={{...CommonStyles.TilePortImage, ...(disabled) ? CommonStyles.Disabled : null}} src={getImage(port, appPortConfig)} />
-                </div>
-                <div style={CommonStyles.TilePortName}>{ (appPortConfig?.overrideName) ? appPortConfig.name : port.name}</div>
-                <div style={{...CommonStyles.TilePortConnectionStatusConnectedText, ...(port.sig == 0 ? CommonStyles.TilePortConnectionStatusDisonnectedText : null)}}>
-                    {port.sig == 0 ? "Disconnected" : "Connected" }
-                </div>
+            <div style={{...CommonStyles.TilePortImageContainer, ...(disabled) ? CommonStyles.Disabled : null}}>
+                <img style={{...CommonStyles.TilePortImage, ...(disabled) ? CommonStyles.Disabled : null}} src={getImage(port, appPortConfig)} />
+            </div>
+            <div style={CommonStyles.TilePortName}>{ (appPortConfig?.overrideName) ? appPortConfig.name : port.name}</div>
+            <div style={{...CommonStyles.TilePortConnectionStatusConnectedText, ...(port.sig == 0 ? CommonStyles.TilePortConnectionStatusDisonnectedText : null)}}>
+                {port.sig == 0 ? "Disconnected" : "Connected" }
             </div>
             <div style={CommonStyles.VerticalList}>
                 {(input) ? <div key={input.port} style={{...CommonStyles.HorizontalList, flexWrap: 'nowrap'}} >

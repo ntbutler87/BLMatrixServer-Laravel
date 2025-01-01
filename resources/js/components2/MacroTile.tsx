@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 // import Share from 'react-native-share';
 // import { btoa, atob } from 'react-native-quick-base64'
 import matrixSDK from "@/config/MatrixSDK";
-import appSettings, {  Macro, getImage } from "@/config/AppSettings";
+import appSettings, {  Macro, getImage, ImagePicker } from "@/config/AppSettings";
+import CommonStyles from "@/components2/CommonStyles";
 // import DocumentPicker, {
 //   DirectoryPickerResponse,
 //   DocumentPickerResponse,
@@ -34,6 +35,7 @@ export interface MacroExport {
 
 const btn = {
     display: 'flex',
+    flexDirection: 'column' as 'column',
     margin: 5,
     paddingVertical: 10,
     paddingHorizontal: 20,
@@ -141,6 +143,8 @@ const actions = {
     flex: 2,
     flexDirection: 'row' as 'row',
     justifyContent: 'space-around',
+    alignItems: 'center' as 'center',
+    columnGap: '1em',
 }
 const actionimg = {
     display: 'flex',
@@ -208,92 +212,34 @@ export default function MacroTile({ onPressF, appPortConfig, disabled }: PortSta
             confirmOutputControl();
         }
     }
+    return (
+        <div className="Tile" style={{...CommonStyles.Tile, paddingTop: '2em', paddingBottom: '1em', justifyContent:'space-between', ...(disabled) ? CommonStyles.Disabled : null}} >
+            
+            { (pickimg) ? <ImagePicker 
+                horizontal={true}
+                // style={styles.imagePicker}
+                onSelect={(image: string, index: number) => {setPickimg(false); appSettings.setPortImageIndex(appPortConfig, index)}}/> :
+                <div style={{...CommonStyles.TilePortImageContainer, ...CommonStyles.TilePortImageContainerLarge, ...(disabled) ? CommonStyles.Disabled : null}} onClick={() => {setPickimg(true)}}>
+                    <img style={{...CommonStyles.TilePortImage, ...(disabled) ? CommonStyles.Disabled : null}} src={getImage(appPortConfig, appPortConfig)} />
+                </div>
+            }
 
-    // const shareMethodPrompt = async () => {
-    //     Alert.alert(
-    //         "",
-    //         "Do you want to AirDrop the config, or save as a JSON file?",
-    //         [
-    //           {
-    //             text: 'AirDrop',
-    //             style: 'default',
-    //             onPress: () => {
-    //                 shareMacro("AirDrop");
-    //             },
-    //           },
-    //           {
-    //             text: 'Store JSON',
-    //             onPress: () => {
-    //                 shareMacro("File");
-    //             },
-    //             style: 'default',
-    //           },
-    //           {
-    //             text: 'Cancel',
-    //             style: 'cancel',
-    //           },
-    //         ],
-    //         {
-    //           cancelable: true,
-    //           onDismiss: () => {}
-    //         },  
-    //     );
-
-    // }
-
-    // const shareMacro = async (method: "AirDrop" | "File") => {
-    //     let macroFileString = "data:application/json;base64,";
-    //     let macroObject = {
-    //         name: (appPortConfig.name) ? appPortConfig.name : 'New Macro',
-    //         iconIndex: appPortConfig.imageIndex,
-    //         type: 'Macro',
-    //         commands: appPortConfig.commands,
-    //     }
-    //     var base64encodedFile = btoa ( JSON.stringify(macroObject) );
-    //     // console.log(base64encodedFile);
-    //     macroFileString += base64encodedFile;
-    //     let macroURL = "blmatrixapp://import/" + base64encodedFile;
-        
-    //     try {
-    //         switch (method) {
-    //             case "AirDrop":
-    //                 Share.open({
-    //                     url: macroURL
-    //                 })
-    //                     .catch((err) => {
-    //                         err && console.log(err);
-    //                     });
-    //                 break;
-    //             case "File":
-    //                 Share.open({
-    //                     filename: 'Macro.json',
-    //                     url: macroFileString
-    //                 })
-    //                     .catch((err) => {
-    //                         err && console.log(err);
-    //                     });
-    //                 break;
-    //         }
+            <div style={{...CommonStyles.TilePortName, fontSize: 20}}>{ appPortConfig.name }</div>
+            <div style={{...actions}}>
+                { (!appPortConfig.isRecording) ? 
+                    <div onClick={confirmRecord} style={{...CommonStyles.TilePortImageContainer}}>
+                        <img src={recordImg} style={{borderRadius: '100%', ...((disabled) ? isDisabled : null)}} /></div>
+                    : <div onClick={ () => { appSettings.saveMacro(appPortConfig); } } style={{...CommonStyles.TilePortImageContainer}} >
+                        <img src={recordingimg} style={{borderRadius: '100%', ...(disabled) ? isDisabled : null}} /></div>
+                }
+                { 
+                    (!appPortConfig.isRecording && appPortConfig.commands.length > 0) ? 
+                    <div onClick={() => {onPressF(appPortConfig)}} style={{...CommonStyles.TilePortImageContainer}} >
+                        <img src={playimg} style={{borderRadius: '100%', ...((disabled) ? isDisabled : null)}} /></div> : null}
                 
-    //     } catch (error: any) {
-    //         Alert.alert(error.message);
-    //     }
-    // }
-
-    // const importMacro = async () => {
-    //     try {
-    //         const pickerResult = await DocumentPicker.pickSingle({
-    //             presentationStyle: 'fullScreen',
-    //             copyTo: 'cachesDirectory',
-    //             type: types.json,
-    //         });
-    //         const fileContent = await RNFS.readFile(decodeURIComponent(pickerResult.uri), 'utf8');
-    //         const newMacro = JSON.parse(fileContent);
-    //         appSettings.importMacro(appPortConfig, newMacro);
-    //     } catch (e) {
-    //         console.log(e)
-    //     }
-    // }
+            </div>
+        </div>
+    );
 
     return (
         <div style={{...btn, ...((disabled) ? isDisabled : null) }}>
@@ -304,16 +250,16 @@ export default function MacroTile({ onPressF, appPortConfig, disabled }: PortSta
             <div style={{...shareimgContainer}} onClick={() => {}}>
                 <img style={{...shareimgStyle}} src={shareimg} />
             </div> : null}
-            {/* {(pickimg) ? <imgPicker 
+            { (pickimg) ? <ImagePicker 
                 horizontal={true}
-                style={styles.imagePicker}
-                onSelect={(image: imgSourcePropType, index: number) => {setPickimg(false); appSettings.setPortimgIndex(appPortConfig, index)}}/> : */}
+                // style={styles.imagePicker}
+                onSelect={(image: string, index: number) => {setPickimg(false); appSettings.setPortImageIndex(appPortConfig, index)}}/> :
                 <div 
                     style={{...inputIconContainer}}
                     onClick={() => {setPickimg(true)}}>
                     <img style={{...inputIcon, ...((disabled) ? isDisabled : null)}} src={getImage(appPortConfig, appPortConfig)} />
                 </div>
-            {/* } */}
+            }
             <div style={{display: 'flex', flex:1}} onClick={() => {setEditName(!editingName); }}>
                 {(editingName) ? 
                     // <input 

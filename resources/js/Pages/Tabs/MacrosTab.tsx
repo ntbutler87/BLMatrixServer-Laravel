@@ -38,14 +38,25 @@ function MacrosTab({matrixStatus, appConfig}: Props): React.JSX.Element {
   }
 
   return (
-    <div style={{...mainContainer}}>
-      {appConfig.Macro.map((item) => {
-        return <MacroTile
-          key={"MACRO" + item.port}
-          appPortConfig={appConfig.Macro[item.port-1]}
-          disabled={!matrixStatus.isConnected || ( recordingMacro && item !== recordingMacro) }
-          onPressF={confirmRunMacro} />
-      }) }
+    <div style={{display: 'flex', flexDirection: 'column'}}>
+      <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+        {appConfig.Macro.slice(0,4).map((item) => {
+          return <MacroTile
+            key={"MACRO" + item.port}
+            appPortConfig={appConfig.Macro[item.port-1]}
+            disabled={!matrixStatus.isConnected || ( recordingMacro && item !== recordingMacro) }
+            onPressF={confirmRunMacro} />
+        }) }
+      </div>
+      <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
+        {appConfig.Macro.slice(4,8).map((item) => {
+          return <MacroTile
+            key={"MACRO" + item.port}
+            appPortConfig={appConfig.Macro[item.port-1]}  
+            disabled={!matrixStatus.isConnected || ( recordingMacro && item !== recordingMacro) }
+            onPressF={confirmRunMacro} />
+        }) }
+      </div>
     </div>
   );
 }

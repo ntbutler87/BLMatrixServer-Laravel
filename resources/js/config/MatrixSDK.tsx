@@ -119,11 +119,8 @@ class MatrixSDK {
     }
 
     init = async (onChangeCallback: Function) => {
-        this.status.ip = await this.getStoredIP();
         this.onChangeCallback = onChangeCallback;
-        if (this.status.ip !== null) {
-            this.startConnection();
-        }
+        this.startConnection();
         this.onChangeCallback(this.status);
     }
 
@@ -174,7 +171,7 @@ class MatrixSDK {
             console.log("Refresh currently blocked. Not querying matrix for status");
             return;
         }
-        // axios.get('http://' + this.status.ip + '/all_dat.get' + new Date().getTime(), {
+        
         axios.get( route("matrix.status") , {
             timeout: 1000
         })
@@ -301,38 +298,11 @@ class MatrixSDK {
 
     }
 
-    getCurrentIP = () => {
-        return this.status.ip;
-    }
-
-    // TODO: Storage and retrieval of IP
-    getStoredIP = async () => {
-        try {
-            // return (await asyncstorage.getItem('matrixIP'));
-            return "127.0.0.1:3000";
-            return "192.168.8.97";
-        } catch (error) {
-            let message
-            if (error instanceof Error) message = error.message
-            else message = String(error)
-            console.log(message);
-        }
-        return null;
-    }
-
     getJoinedOutputPort(port: MatrixOutput): MatrixOutput {
         if (port.type === "HDMI_OUT") {
             return this.status.HDBT_OUT[port.port-1];
         }
         return this.status.HDMI_OUT[port.port-1];
-    }
-
-    // TODO: Storage of IP
-    setIPAddress = (ipAddress: string) => {
-        // asyncstorage.setItem('matrixIP', ipAddress);
-        this.status.ip = ipAddress;
-        this.stopConnection();
-        this.startConnection();
     }
 
     setOutputSource = (output: number, source: number) => {

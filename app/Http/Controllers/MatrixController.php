@@ -3,36 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Http\Requests\UpdateMatrixSettingsRequest;
+use App\Models\Matrix;
 
 class MatrixController extends Controller
 {
     //
     function get_status (Request $request)
     {
-        // $response = Http::get("http://192.168.8.97/all_dat.get");
-        $response = Http::get("http://192.168.7.5:3000/all_dat.get");
+        $url = "http://" . config('matrix.ip') . ":" . config('matrix.port') . "/all_dat.get";
+        // dd($url);
+        $response = Http::get($url);
         return $response->body();
-        // return response()->json( MatrixController::parse_status_string( $response->body() ) );
     }
 
-    function set_video (Request $request): Response
+    function set_video (Request $request): RedirectResponse
     {
-        // $response = Http::withBody($request->body)->post("http://192.168.8.97/video.set");
-        $response = Http::withBody($request->body, 'text/plain;charset=UTF-8')->post("http://192.168.7.5:3000/video.set");
+        $url = "http://" . config('matrix.ip') . ":" . config('matrix.port') . "/video.set";
+        $response = Http::withBody($request->body, 'text/plain;charset=UTF-8')->post($url);
         if (! $response->successful()) {
             return $response;
         }
-        return Inertia::render('Matrix', [
-            'status' => session('status'),
-        ]);
+        return Redirect::back();
     }
 
-    function get_ip (Request $request)
+    function updateMatrixSettings (UpdateMatrixSettingsRequest $request, Matrix $matrix)
     {
-
+        $matrix->update($request->validated());
+        return Redirect::back();
     }
 
     private static function parse_status_string (string $status)

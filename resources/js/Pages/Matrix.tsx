@@ -93,10 +93,10 @@ function App() {
             aria-label="full width tabs example"
           >
             <Tab label="Scenes" {...a11yProps(0)} />
-            <Tab label="Macros" {...a11yProps(1)} />
-            <Tab label="Inputs" {...a11yProps(2)} />
-            <Tab label="Outputs" {...a11yProps(3)} />
-            <Tab label="Diagnostics" {...a11yProps(4)} />
+            {/* <Tab label="Macros" {...a11yProps(1)} /> */}
+            <Tab label="Inputs" {...a11yProps(1)} />
+            <Tab label="Outputs" {...a11yProps(2)} />
+            {/* <Tab label="Diagnostics" {...a11yProps(4)} /> */}
           </Tabs>
         </AppBar>
       </Box>
@@ -104,16 +104,16 @@ function App() {
         <TabPanel value={value} index={0} dir={theme.direction}>
           <ScenesTab matrixStatus={matrixStatus} appConfig={appConfig} />
         </TabPanel>
-        <TabPanel value={value} index={1} dir={theme.direction}>
+        {/* <TabPanel value={value} index={1} dir={theme.direction}>
           <MacrosTab matrixStatus={matrixStatus} appConfig={appConfig} />
-        </TabPanel>
-        <TabPanel value={value} index={2} dir={theme.direction}>
+        </TabPanel> */}
+        <TabPanel value={value} index={1} dir={theme.direction}>
           <InputTab matrixStatus={matrixStatus} appConfig={appConfig} />
         </TabPanel>
-        <TabPanel value={value} index={3} dir={theme.direction}>
+        <TabPanel value={value} index={2} dir={theme.direction}>
           <OutputTab matrixStatus={matrixStatus} appConfig={appConfig} />
         </TabPanel>
-        <TabPanel value={value} index={4} dir={theme.direction}>
+        {/* <TabPanel value={value} index={4} dir={theme.direction}>
           <div style={{background:'rgb(225 225 225)',padding:'2em',marginTop:'1em'}}>
             <h2>Diagnostics</h2>
             <div style={{display: 'flex', flexDirection: 'column'}}>
@@ -121,7 +121,7 @@ function App() {
               <div>Status: {JSON.stringify(matrixStatus)}</div>
             </div>
           </div>
-        </TabPanel>
+        </TabPanel> */}
       </Box>
     </div>
   )

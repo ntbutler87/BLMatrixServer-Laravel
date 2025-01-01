@@ -40,17 +40,22 @@ const TilePortImageContainer = {
     borderRadius: 50,
     backgroundColor: '#E8F6FF',
     display: 'flex',
+    placeItems: 'center',
     placeContent: 'center',
 };
 const TilePortImageContainerLarge = {
     width: 140,
     height: 140,
     borderRadius: 140,
+    placeItems: 'center',
+    placeContent: 'center',
 };
 const TilePortImageContainerMedium = {
     width: 100,
     height: 100,
     borderRadius: 100,
+    placeItems: 'center',
+    placeContent: 'center',
 };
 const TilePortConnectionImage = {
     width: 15,
@@ -82,8 +87,8 @@ const HorizontalList = {
     padding: 5,
 };
 const Disabled = {
-    backgroundColor: '#aaa',
-    opacity: 0.6,
+    filter: 'brightness(0.5)',
+    // opacity: 0.6,
 };
 
 const CommonStyles = {
