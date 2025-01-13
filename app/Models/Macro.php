@@ -11,6 +11,7 @@ class Macro extends Model
         'slot',
         'name',
         'commands',
+        'image',
     ];
 
 }

@@ -33,6 +33,24 @@ export default function Authenticated({
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    href={route('matrix.index')}
+                                    active={route().current('matrix.index')}
+                                >
+                                    Matrix List
+                                </NavLink>
+                                <NavLink
+                                    href={route('macro.index')}
+                                    active={route().current('macro.index')}
+                                >
+                                    Macros
+                                </NavLink>
+                                <NavLink
+                                    href={route('scene.index')}
+                                    active={route().current('scene.index')}
+                                >
+                                    Scenes
+                                </NavLink>
                             </div>
                         </div>
 
@@ -64,6 +82,21 @@ export default function Authenticated({
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
+                                        <Dropdown.Link
+                                            href={route('matrix.index')}
+                                        >
+                                            Matrix List
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            href={route('macro.index')}
+                                        >
+                                            Macros
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            href={route('scene.index')}
+                                        >
+                                            Scenes
+                                        </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route('profile.edit')}
                                         >

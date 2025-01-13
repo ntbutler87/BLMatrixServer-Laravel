@@ -8,11 +8,70 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Http\Requests\RenameSceneRequest;
 use App\Http\Requests\UpdateMatrixSettingsRequest;
+use App\Models\Scene;
 use App\Models\Matrix;
 
 class MatrixController extends Controller
 {
+    function index (Request $request): Response
+    {
+        return Inertia::render('Matrix/List', [
+            'matricies' => Matrix::get()->all(),
+        ]);
+    }
+
+    function create (Request $request): Response
+    {
+        return Inertia::render('Matrix/Create');
+    }
+
+    function store (Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'ip' => ['required', 'ip'],
+            'port' => ['required', 'integer'],
+            'selected' => ['sometimes', 'nullable', 'boolean'],
+        ]);
+
+        if ($validated['selected']) {
+            Matrix::where('selected')->udpdate(['selected' => null]);
+        }
+        Matrix::create($validated);
+
+        return Redirect::route('matrix.index');
+    }
+    
+    function edit (Request $request, Matrix $matrix): Response
+    {
+        return Inertia::render('Matrix/Edit', [
+            'matrix' => $matrix,
+        ]);
+    }
+
+    function update (Request $request, Matrix $matrix): RedirectResponse
+    {
+        $validated = $request->validate([
+            'ip' => ['required', 'ip'],
+            'port' => ['required', 'integer'],
+            'selected' => ['sometimes', 'nullable', 'boolean'],
+        ]);
+        if ($validated['selected']) {
+            Matrix::where('selected','!=',null)->whereNot('id',$matrix->id)->first()->update(['selected' => null]);
+        }
+        $matrix->update($validated);
+
+        return Redirect::route('matrix.edit', ['matrix' => $matrix]);
+    }
+
+    function destroy (Request $request, Matrix $matrix): RedirectResponse
+    {
+        $matrix->delete();
+
+        return Redirect::route('matrix.index');
+    }
+
     //
     function get_status (Request $request)
     {

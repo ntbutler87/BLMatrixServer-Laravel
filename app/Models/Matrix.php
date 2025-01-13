@@ -9,6 +9,8 @@ class Matrix extends Model
     //
     protected $fillable = [
         'ip',
+        'port',
+        'selected',
     ];
 
 }
